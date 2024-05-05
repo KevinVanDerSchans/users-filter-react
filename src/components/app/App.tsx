@@ -10,6 +10,9 @@ function App() {
   const originalUsers = useRef<User[]>([])
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
 
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
   const toggleColors = () => {
     setShowColors(!showColors)
   }
@@ -56,14 +59,24 @@ function App() {
   }
 
   useEffect(() => {
-    fetch('https://randomuser.me/api?results=100')
-      .then(async res => await res.json())
+    setLoading(true)
+    setError(false)
+
+    fetch('https://randomuser.me/api?results=10')
+      .then(async res => {
+        if (!res.ok) throw new Error('Fetch error')
+        return await res.json()
+      })
       .then(res => {
         setUsers(res.results)
         originalUsers.current = res.results
       })
       .catch(err => {
+        setError(err)
         console.log(err)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }, [])
 
@@ -89,12 +102,22 @@ function App() {
           />
         </header>
 
-        <UsersList
-          users={sortedUsers}
-          showColors={showColors}
-          deleteUser={handleDelete}
-          changeSorting={handleChangeSort}
-        />
+        <main>
+          {loading && <p>Loading...</p>}
+
+          {!loading && error && <p>Error...</p>}
+
+          {!loading && !error && users.length === 0 && <p>There is no users in database...</p>}
+
+          {!loading && !error && users.length > 0 && (
+            <UsersList
+              users={sortedUsers}
+              showColors={showColors}
+              deleteUser={handleDelete}
+              changeSorting={handleChangeSort}
+            />
+          )}
+        </main>
       </div>
     </>
   )
