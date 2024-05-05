@@ -3,9 +3,10 @@ import { type User } from '../../types.d'
 interface Props {
   users: User[]
   showColors: boolean
+  deleteUser: (email: string) => void
 }
 
-export function UsersList({ users, showColors }: Props) {
+export function UsersList({ users, showColors, deleteUser }: Props) {
   return (
     <table width='100%'>
       <thead>
@@ -25,7 +26,7 @@ export function UsersList({ users, showColors }: Props) {
 
           return (
             <tr
-              key={index}
+              key={user.email}
               style={{ backgroundColor: color }}
             >
               <td>
@@ -38,7 +39,15 @@ export function UsersList({ users, showColors }: Props) {
 
               <td>{user.location.country}</td>
 
-              <td>Delete</td>
+              <td>
+                <button
+                  onClick={() => {
+                    deleteUser(user.email)
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           )
         })}
