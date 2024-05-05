@@ -7,9 +7,14 @@ import './App.css'
 function App() {
   const [users, setUsers] = useState([])
   const [showColors, setShowColors] = useState(false)
+  const [sortByCountry, setSortByCountry] = useState(false)
 
   const toggleColors = () => {
     setShowColors(!showColors)
+  }
+
+  const toggleSortByCountry = () => {
+    setSortByCountry(prevState => !prevState)
   }
 
   useEffect(() => {
@@ -30,6 +35,8 @@ function App() {
 
         <header>
           <button onClick={toggleColors}>Color rows</button>
+
+          <button onClick={toggleSortByCountry}>Sort by country</button>
         </header>
 
         <UsersList
