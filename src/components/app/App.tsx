@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import { UsersList } from '../UsersList/UsersList'
 import './App.css'
+
+// import { type User } from '../../types.d'
 
 function App() {
   const [users, setUsers] = useState([])
@@ -20,7 +23,7 @@ function App() {
       <div className='app'>
         <h1>Users filter</h1>
 
-        {JSON.stringify(users)}
+        <UsersList users={users} />
       </div>
     </>
   )
