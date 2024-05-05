@@ -1,7 +1,3 @@
-Imagen de project-overview
-
-Deploy
-
 # Users filter
 
 ## React / TypeScript
@@ -26,7 +22,7 @@ Deploy
 
 <br>
 
-**DEPLOY**: <br> DEPLOY LINK
+**DEPLOY**: <br> https://users-filter-react.vercel.app
 
 <br>
 <br>
