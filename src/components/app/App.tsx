@@ -92,7 +92,7 @@ function App() {
   return (
     <>
       <div className='app'>
-        <h1>Users filter</h1>
+        <h1 className='title'>Users filter</h1>
 
         <header>
           <button onClick={toggleColors}>Color rows</button>
@@ -104,7 +104,8 @@ function App() {
           <button onClick={handleReset}>Reset state</button>
 
           <input
-            placeholder='Search by country'
+            className='input'
+            placeholder='Search by country...'
             onChange={e => {
               setFilterCountry(e.target.value)
             }}
