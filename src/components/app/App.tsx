@@ -3,6 +3,15 @@ import { UsersList } from '../UsersList/UsersList'
 import './App.css'
 import { SortBy, type User } from '../../types.d'
 
+const fetchUsers = async (page: number) => {
+  return await fetch(`https://randomuser.me/api?results=10&seed=kevinschans&page=${page}`)
+    .then(async res => {
+      if (!res.ok) throw new Error('Fetch error')
+      return await res.json()
+    })
+    .then(res => res.results)
+}
+
 function App() {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(true)
@@ -12,6 +21,7 @@ function App() {
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const toggleColors = () => {
     setShowColors(!showColors)
@@ -62,14 +72,13 @@ function App() {
     setLoading(true)
     setError(false)
 
-    fetch('https://randomuser.me/api?results=10')
-      .then(async res => {
-        if (!res.ok) throw new Error('Fetch error')
-        return await res.json()
-      })
-      .then(res => {
-        setUsers(res.results)
-        originalUsers.current = res.results
+    fetchUsers(currentPage)
+      .then(users => {
+        setUsers(prevUsers => {
+          const newUsers = prevUsers.concat(users)
+          originalUsers.current = newUsers
+          return newUsers
+        })
       })
       .catch(err => {
         setError(err)
@@ -78,7 +87,7 @@ function App() {
       .finally(() => {
         setLoading(false)
       })
-  }, [])
+  }, [currentPage])
 
   return (
     <>
@@ -103,13 +112,7 @@ function App() {
         </header>
 
         <main>
-          {loading && <p>Loading...</p>}
-
-          {!loading && error && <p>Error...</p>}
-
-          {!loading && !error && users.length === 0 && <p>There is no users in database...</p>}
-
-          {!loading && !error && users.length > 0 && (
+          {users.length > 0 && (
             <UsersList
               users={sortedUsers}
               showColors={showColors}
@@ -117,6 +120,14 @@ function App() {
               changeSorting={handleChangeSort}
             />
           )}
+
+          {loading && <p>Loading...</p>}
+
+          {error && <p>Error...</p>}
+
+          {!error && users.length === 0 && <p>There is no users in database...</p>}
+
+          {!loading && !error && <button onClick={() => setCurrentPage(currentPage + 1)}>Load more</button>}
         </main>
       </div>
     </>
