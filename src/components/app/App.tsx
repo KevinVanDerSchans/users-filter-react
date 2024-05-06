@@ -4,7 +4,7 @@ import './App.css'
 import { SortBy, type User } from '../../types.d'
 
 const fetchUsers = async (page: number) => {
-  return await fetch(`https://randomuser.me/api?results=10&seed=kevinschans&page=${page}`)
+  return await fetch(`https://randomuser.me/api?results=10&page=${page}`)
     .then(async res => {
       if (!res.ok) throw new Error('Fetch error')
       return await res.json()
