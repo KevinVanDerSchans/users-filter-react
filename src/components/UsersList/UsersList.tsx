@@ -1,4 +1,5 @@
 import { SortBy, type User } from '../../types.d'
+import './UsersList.css'
 
 interface Props {
   users: User[]
@@ -45,8 +46,11 @@ export function UsersList({ users, showColors, deleteUser, changeSorting }: Prop
               key={user.email}
               style={{ backgroundColor: color }}
             >
-              <td>
-                <img src={user.picture.thumbnail} />
+              <td className='photo-container'>
+                <img
+                  className='photo'
+                  src={user.picture.thumbnail}
+                />
               </td>
 
               <td>{user.name.first}</td>
@@ -60,8 +64,16 @@ export function UsersList({ users, showColors, deleteUser, changeSorting }: Prop
                   onClick={() => {
                     deleteUser(user.email)
                   }}
+                  className='delete-button'
                 >
-                  Delete
+                  <img
+                    src='../../../public/assets/delete.svg'
+                    alt='Delete row'
+                    style={{
+                      height: 28,
+                      width: 28,
+                    }}
+                  />
                 </button>
               </td>
             </tr>

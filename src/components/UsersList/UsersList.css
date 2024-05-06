@@ -1,0 +1,16 @@
+.photo-container {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.photo {
+  border-radius: 50%;
+}
+
+.delete-button {
+  background-color: #e9e6e6;
+  justify-content: center;
+  place-content: center;
+  place-items: center;
+}

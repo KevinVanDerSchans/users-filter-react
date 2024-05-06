@@ -27,6 +27,7 @@ header {
 
 .title {
   font-size: 40px;
+  cursor: default;
 }
 
 .input {
@@ -42,4 +43,8 @@ header {
   font-size: 12px;
   font-style: italic;
   color: #888;
+}
+
+.load-more-button {
+  margin-top: 28px;
 }

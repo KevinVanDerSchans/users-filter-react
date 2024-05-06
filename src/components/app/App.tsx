@@ -128,7 +128,14 @@ function App() {
 
           {!error && users.length === 0 && <p>There is no users in database...</p>}
 
-          {!loading && !error && <button onClick={() => setCurrentPage(currentPage + 1)}>Load more</button>}
+          {!loading && !error && (
+            <button
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className='load-more-button'
+            >
+              Load more
+            </button>
+          )}
         </main>
       </div>
     </>
