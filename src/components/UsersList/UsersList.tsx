@@ -43,7 +43,7 @@ export function UsersList({ users, showColors, deleteUser, changeSorting }: Prop
 
           return (
             <tr
-              key={user.id.value}
+              key={user.email}
               style={{ backgroundColor: color }}
             >
               <td className='photo-container'>
