@@ -3,12 +3,25 @@ import { UsersList } from '../UsersList/UsersList'
 import './App.css'
 import { SortBy, type User } from '../../types.d'
 
+const fetchUsers = async (page: number) => {
+  return await fetch(`https://randomuser.me/api?results=10&seed=kevinschans&page=${page}`)
+    .then(async res => {
+      if (!res.ok) throw new Error('Fetch error')
+      return await res.json()
+    })
+    .then(res => res.results)
+}
+
 function App() {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(true)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const originalUsers = useRef<User[]>([])
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const toggleColors = () => {
     setShowColors(!showColors)
@@ -56,16 +69,25 @@ function App() {
   }
 
   useEffect(() => {
-    fetch('https://randomuser.me/api?results=100')
-      .then(async res => await res.json())
-      .then(res => {
-        setUsers(res.results)
-        originalUsers.current = res.results
+    setLoading(true)
+    setError(false)
+
+    fetchUsers(currentPage)
+      .then(users => {
+        setUsers(prevUsers => {
+          const newUsers = prevUsers.concat(users)
+          originalUsers.current = newUsers
+          return newUsers
+        })
       })
       .catch(err => {
+        setError(err)
         console.log(err)
       })
-  }, [])
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [currentPage])
 
   return (
     <>
@@ -89,12 +111,24 @@ function App() {
           />
         </header>
 
-        <UsersList
-          users={sortedUsers}
-          showColors={showColors}
-          deleteUser={handleDelete}
-          changeSorting={handleChangeSort}
-        />
+        <main>
+          {users.length > 0 && (
+            <UsersList
+              users={sortedUsers}
+              showColors={showColors}
+              deleteUser={handleDelete}
+              changeSorting={handleChangeSort}
+            />
+          )}
+
+          {loading && <p>Loading...</p>}
+
+          {error && <p>Error...</p>}
+
+          {!error && users.length === 0 && <p>There is no users in database...</p>}
+
+          {!loading && !error && <button onClick={() => setCurrentPage(currentPage + 1)}>Load more</button>}
+        </main>
       </div>
     </>
   )
