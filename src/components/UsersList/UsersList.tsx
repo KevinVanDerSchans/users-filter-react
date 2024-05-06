@@ -43,7 +43,7 @@ export function UsersList({ users, showColors, deleteUser, changeSorting }: Prop
 
           return (
             <tr
-              key={user.email}
+              key={user.id.value}
               style={{ backgroundColor: color }}
             >
               <td className='photo-container'>
@@ -67,11 +67,11 @@ export function UsersList({ users, showColors, deleteUser, changeSorting }: Prop
                   className='delete-button'
                 >
                   <img
-                    src='../../../public/assets/delete.svg'
+                    src='/assets/delete.svg'
                     alt='Delete row'
                     style={{
-                      height: 28,
-                      width: 28,
+                      height: 24,
+                      width: 24,
                     }}
                   />
                 </button>
